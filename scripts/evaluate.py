@@ -11,6 +11,14 @@ from data.data_interface import get_dataloaders
 from models.base_transformer import VanillaTransformer
 from training.metrics import compute_metrics
 
+def get_device():
+    if torch.cuda.is_available():
+        return 'cuda'
+    elif torch.backends.mps.is_available():
+        return 'mps'
+    else:
+        return 'cpu'
+
 def main():
     with open("config/model_config.yaml", 'r') as f:
         config = yaml.safe_load(f)
@@ -23,7 +31,7 @@ def main():
         batch_size=data_cfg['batch_size']
     )
     
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    device = get_device()
     model = VanillaTransformer(
         feature_dim=data_cfg['feature_dim'],
         d_model=model_cfg['d_model'],

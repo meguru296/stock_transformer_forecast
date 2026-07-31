@@ -10,6 +10,14 @@ from data.data_interface import get_dataloaders
 from models.base_transformer import VanillaTransformer
 from training.trainer import Trainer
 
+def get_device():
+    if torch.cuda.is_available():
+        return 'cuda'
+    elif torch.backends.mps.is_available():
+        return 'mps'
+    else:
+        return 'cpu'
+
 def main(config_path):
     with open(config_path, 'r') as f:
         config = yaml.safe_load(f)
@@ -38,7 +46,7 @@ def main(config_path):
     total_params = sum(p.numel() for p in model.parameters())
     print(f"参数量: {total_params:,}")
 
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    device = get_device()
     print(f"设备: {device}")
 
     trainer = Trainer(model, train_cfg, device=device)
