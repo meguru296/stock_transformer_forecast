@@ -1,0 +1,23 @@
+# 数据
+data/raw/
+data/temp/
+outputs/
+*.parquet
+*.zip
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+
+# 模型权重
+*.pt
+*.pth
+*.ckpt

@@ -1,0 +1,30 @@
+data:
+  upstream_repo: "ZIN99606/stock_daily_crawler"
+  data_dir: "./data/raw"
+  seq_len: 30
+  pred_len: 1
+  batch_size: 256
+  num_stocks: 22
+  feature_dim: 11
+
+model:
+  name: "vanilla_transformer"
+  d_model: 128
+  n_heads: 8
+  n_layers: 4
+  d_ff: 512
+  dropout: 0.1
+  activation: "gelu"
+
+training:
+  epochs: 100
+  lr: 0.0001
+  weight_decay: 0.00001
+  early_stop_patience: 15
+  loss: "huber"
+  huber_delta: 0.1
+  gradient_clip: 1.0
+
+evaluation:
+  train_ratio: 0.8
+  metrics: ["mse", "mae", "ic", "rank_ic", "direction_acc"]
