@@ -1,0 +1,33 @@
+name: Daily Forecast
+
+on:
+  schedule:
+    - cron: '0 11 * * *'  # UTC 11:00 = 北京时间 19:00
+  workflow_dispatch:
+
+jobs:
+  forecast:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      
+      - name: Download data
+        run: python data/download_data.py
+      
+      - name: Run inference
+        run: python scripts/predict.py --date $(date +%Y%m%d)
+      
+      - name: Upload forecast to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: outputs/forecasts/*.parquet
+          tag_name: forecast-${{ github.run_id }}
+          name: Forecast $(date +%Y%m%d)
