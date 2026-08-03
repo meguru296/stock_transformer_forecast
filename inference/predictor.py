@@ -41,7 +41,7 @@ class StockPredictor:
             batch_x = torch.stack(batch_x).to(self.device)
             pred = self.model(batch_x).cpu().numpy()
             predictions.extend(pred.tolist())
-            actual_returns.extend([y.item() for y in batch_y])
+            actual_returns.extend([float(y) for y in batch_y])
         result = pd.DataFrame({
             "trade_date": dates,
             "stock_code": stock_codes,

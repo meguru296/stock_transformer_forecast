@@ -6,6 +6,5 @@ class HuberLoss(nn.Module):
         super().__init__()
         self.delta = delta
         self.huber = nn.HuberLoss(delta=delta)
-
     def forward(self, pred, target, mask=None):
         return self.huber(pred, target)
